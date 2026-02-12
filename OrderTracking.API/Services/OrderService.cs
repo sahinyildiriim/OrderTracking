@@ -21,6 +21,8 @@ namespace OrderTracking.API.Services
             if (customer == null)
                 return null;
 
+            var totalPrice = dto.Quantity * customer.PricePerUnit;
+
             var order = new Order
             {
                 CustomerId = dto.CustomerId,
@@ -29,6 +31,10 @@ namespace OrderTracking.API.Services
             };
 
             _context.Orders.Add(order);
+
+            // 🔥 BAKİYE ARTIRMA
+            customer.CurrentBalance += totalPrice;
+
             await _context.SaveChangesAsync();
 
             return order;
